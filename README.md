@@ -59,6 +59,24 @@ INSTALLED_APPS = [
 ]
 ```
 
+## Templates
+
+You need to change `{{ MEDIA_URL }}` and `{{ STATIC_URL }}` to template tags.
+
+### Original
+
+```html
+<img src="{{ MEDIA_URL }}some_image.jpg">
+```
+
+### Modified
+
+```html
+{% load media_url %}
+
+<img src="{% media_url %}some_image.jpg">
+```
+
 ## Tests
 
 Forthcoming.
