@@ -14,4 +14,9 @@ def __lookup(request, url_map, default_url ):
             if remote_ip == ips:
                 return url
 
+    try:
+        return url_map['default']
+    except KeyError:
+        pass
+
     return default_url

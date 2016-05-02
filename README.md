@@ -3,10 +3,10 @@
 This little app allows you to dynamically change Django's `MEDIA_URL` and
 `STATIC_URL` on a per request basis based on the clients `REMOTE_ADDR`.
 
-The use case this was written for was that the local web server has all
-the large media assets but the remote server is the public facing web
-server. If you were at the local location it sure would be nice to get
-the assets directly instead of proxying via the remote web server.
+The use case this app was that the local web server has all the large
+media assets but the remote server is the public facing web server. If
+you were at the local location it sure would be nice to get the assets
+directly instead of proxying via the remote web server.
 
 ## Prerequisites
 
@@ -37,6 +37,9 @@ addresses.
 If the clients remote address doesn't match any key then `MEDIA_URL` or
 `STATIC_URL` is used as appropriate.
 
+However, if there is a 'default' key in *_URLS then that will take
+precendence over *_URL.
+
 ```python
 import iptools
 
@@ -44,18 +47,20 @@ MEDIA_URLS = {
     '127.0.0.1': 'http://localhost/media/',
     #iptools.IpRange(''): '',
     iptools.IpRangeList('192.168.1.0/24','2.3.4.5'): "https://www2.local/media/",
+    'default': 'http://local_server/media/', # takes precendence over MEDIA_URL
 }
 ...
 STATIC_URLS = {
     '127.0.0.1': 'http://localhost/static/',
     #iptools.IpRange(''): '',
     iptools.IpRangeList('192.168.1.0/24','2.3.4.5'): "https://www2.local/static/",
+    'default': 'http://local_server/static/', # takes precendence over STATIC_URL
 }
 
 # add dynamicstatics to INSTALLED_APPS
 INSTALLED_APPS = [
 ...
-  dynamicstatics,
+  'dynamicstatics',
 ]
 ```
 
